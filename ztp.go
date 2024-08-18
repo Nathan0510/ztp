@@ -41,7 +41,7 @@ func main(){
         fmt.Print(string(data))
 
 
-            confssh := &ssh.ClientConfig{
+        confssh := &ssh.ClientConfig{
         User: "admin",
         Auth: []ssh.AuthMethod{
                                 ssh.Password("admin"),
@@ -51,8 +51,7 @@ func main(){
 
         }
 
-
-            client, err := ssh.Dial("tcp", ip, confssh)
+        client, err := ssh.Dial("tcp", ip, confssh)
         if err != nil {
                 log.Fatal("connexion failed bg", err)
         }
