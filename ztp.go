@@ -21,31 +21,31 @@ func main(){
         ztp.POST("/ztp", func (c *gin.Context){
                 var json serialnumber
 
-      if err := c.ShouldBindJSON(&json); err != nil {
-            c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-            return
+        if err := c.ShouldBindJSON(&json); err != nil {
+                c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                return
         }
 
-                ip := c.ClientIP()
-                c.JSON(http.StatusOK, gin.H{
-                        "ton serial number": json.SN,
-                        "ton IP": ip,
-                })
+        ip := c.ClientIP()
 
-                path := "/tmp/" + json.SN
+        c.JSON(http.StatusOK, gin.H{
+                "ton serial number": json.SN,
+                "ton IP": ip,
+        })
+
+        path := "/tmp/" + json.SN
 
         data, err := os.ReadFile(path)
         if  err != nil {
                 panic(err)
         }
-        fmt.Print(string(data))
 
 
         confssh := &ssh.ClientConfig{
-        User: "admin",
-        Auth: []ssh.AuthMethod{
-                                ssh.Password("admin"),
-        },
+                User: "admin",
+                Auth: []ssh.AuthMethod{
+                        ssh.Password("admin"),
+                },
 
         HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 
@@ -69,7 +69,7 @@ func main(){
                 log.Fatalf("command failed bg", err)
         }
 
-    fmt.Printf("Output:\n", output)
+        fmt.Printf("Output:\n", output)
 
         })
 
