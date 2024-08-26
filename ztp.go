@@ -1,8 +1,8 @@
 package main
 
 import (
-        "log"
         "fmt"
+//      "log"
         "github.com/gin-gonic/gin"
         "net/http"
         "os"
@@ -37,7 +37,7 @@ func main(){
 
         data, err := os.ReadFile(path)
         if  err != nil {
-                panic(err)
+                fmt.Println("le fichier existe pas bg", err)
         }
 
 
@@ -46,33 +46,29 @@ func main(){
                 Auth: []ssh.AuthMethod{
                         ssh.Password("admin"),
                 },
-
         HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 
         }
 
-        client, err := ssh.Dial("tcp", ip, confssh)
+        client, err := ssh.Dial("tcp", "192.168.1.2:22", confssh)
         if err != nil {
-                log.Fatal("connexion failed bg", err)
+                fmt.Println("connexion failed bg", err)
         }
         defer client.Close()
 
         session, err := client.NewSession()
         if err != nil {
-                log.Fatalf("session failed bg", err)
+                fmt.Println("session failed bg", err)
         }
         defer session.Close()
 
+    if err := session.Run(string(data)); err != nil {
+         fmt.Println("command failed bg", err)
+    }
 
-        output, err := session.CombinedOutput(string(data))
-        if err != nil {
-                log.Fatalf("command failed bg", err)
-        }
 
-        fmt.Printf("Output:\n", output)
 
         })
-
 
         ztp.Run()
 }
