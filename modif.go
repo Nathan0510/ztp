@@ -7,6 +7,8 @@ import (
         "net/http"
         "os"
         "golang.org/x/crypto/ssh"
+        "strings"
+        "io/ioutil"
 )
 
 type serialnumber struct {
@@ -18,6 +20,7 @@ type DATACUST struct {
         LAN_VOIX string
         USER string
         PASSWD string
+        SN      string
 }
 
 func main(){
@@ -48,6 +51,7 @@ func main(){
                 "ton IP": ip,
         })
 
+        address := ip + ":22"
         path := "/tmp/" + json.SN
 
         data, err := os.ReadFile(path)
@@ -65,7 +69,7 @@ func main(){
 
         }
 
-        client, err := ssh.Dial("tcp", "192.168.1.2:22", confssh)
+        client, err := ssh.Dial("tcp", address, confssh)
         if err != nil {
                 fmt.Println("connexion failed bg", err)
         }
@@ -119,7 +123,29 @@ func main(){
                         return
                 }
 
-        path := "/tmp/"
+                tpl := "/tmp/tpl"
+                path := "/tmp/" + json.SN
+
+            data, err := ioutil.ReadFile(tpl)
+                if err != nil {
+                fmt.Println("Erreur lors de la lecture du fichier:", err)
+        }
+
+        config := strings.ReplaceAll(string(data), "USER", json.USER)
+        config = strings.ReplaceAll(config, "LAN_DATA", json.LAN_DATA)
+        config = strings.ReplaceAll(config, "LAN_VOIX", json.LAN_VOIX)
+        config = strings.ReplaceAll(config, "PASSWD", json.PASSWD)
+
+        if err := ioutil.WriteFile(path, []byte(config), 0644); err != nil {
+                fmt.Println("Erreur lors de l'écriture du fichier:", err)
+        }
+
+
+                c.JSON(http.StatusOK, gin.H{
+                        "status": string(config),
+                })
+
+
 
         })
 
