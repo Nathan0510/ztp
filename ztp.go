@@ -42,7 +42,7 @@ func main(){
                 "ton serial number": json.SN,
                 "ton IP": ip,
         })
-
+        address := ip + ":22"
         path := "/tmp/" + json.SN
 
         data, err := os.ReadFile(path)
@@ -60,7 +60,7 @@ func main(){
 
         }
 
-        client, err := ssh.Dial("tcp", "192.168.1.2:22", confssh)
+        client, err := ssh.Dial("tcp", address, confssh)
         if err != nil {
                 fmt.Println("connexion failed bg", err)
         }
