@@ -1,1 +1,1 @@
-# ztp
+# ztp mikrotik cpe
