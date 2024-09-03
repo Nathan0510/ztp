@@ -126,18 +126,18 @@ func main(){
                 tpl := "/tmp/tpl"
                 path := "/tmp/" + json.SN
 
-            data, err := ioutil.ReadFile(tpl)
+            data, err := os.ReadFile(tpl)
                 if err != nil {
-                fmt.Println("Erreur lors de la lecture du fichier:", err)
+                fmt.Println("le fichier existe pas bg", err)
         }
 
-        config := strings.ReplaceAll(string(data), "USER", json.USER)
-        config = strings.ReplaceAll(config, "LAN_DATA", json.LAN_DATA)
+                config := strings.ReplaceAll(string(data), "USER", json.USER)
+                config = strings.ReplaceAll(config, "LAN_DATA", json.LAN_DATA)
         config = strings.ReplaceAll(config, "LAN_VOIX", json.LAN_VOIX)
         config = strings.ReplaceAll(config, "PASSWD", json.PASSWD)
 
         if err := ioutil.WriteFile(path, []byte(config), 0644); err != nil {
-                fmt.Println("Erreur lors de l'écriture du fichier:", err)
+                fmt.Println("erreur pdt l ecriture du fichier bg", err)
         }
 
 
