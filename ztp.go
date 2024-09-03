@@ -1,3 +1,4 @@
+user@routeur:~/go/ztp$ cat last_ztp.go
 package main
 
 import (
@@ -15,8 +16,17 @@ type serialnumber struct {
 
 
 func main(){
+
+//      gin.SetMode(gin.ReleaseMode)
+//      ztp := gin.New()
         ztp := gin.Default()
         ztp.SetTrustedProxies([]string{"192.168.1.0/24"})
+
+        ztp.GET("/ping", func (c *gin.Context) {
+                c.JSON(http.StatusOK, gin.H{
+                        "message":"pong",
+                })
+        })
 
         ztp.POST("/ztp", func (c *gin.Context){
                 var json serialnumber
