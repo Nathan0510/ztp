@@ -28,9 +28,9 @@ func main(){
         ztp := gin.Default()
         ztp.SetTrustedProxies([]string{"192.168.1.0/24"})
 
-        ztp.GET("/ping", func (c *gin.Context) {
+        ztp.GET("/narutoooooooo", func (c *gin.Context) {
                 c.JSON(http.StatusOK, gin.H{
-                        "message":"pong",
+                        "message":"sasukeeeeeeee",
                 })
         })
 
