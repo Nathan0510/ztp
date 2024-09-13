@@ -16,10 +16,8 @@ type serialnumber struct {
 }
 
 type DATACUST struct {
-        LAN_DATA string
-        LAN_VOIX string
-        USER string
-        PASSWD string
+        LOGINPPP string
+        PASSPPP string
         SN      string
 }
 
@@ -131,10 +129,8 @@ func main(){
                 fmt.Println("le fichier existe pas bg", err)
         }
 
-                config := strings.ReplaceAll(string(data), "USER", json.USER)
-                config = strings.ReplaceAll(config, "LAN_DATA", json.LAN_DATA)
-        config = strings.ReplaceAll(config, "LAN_VOIX", json.LAN_VOIX)
-        config = strings.ReplaceAll(config, "PASSWD", json.PASSWD)
+                config := strings.ReplaceAll(string(data), "LOGINPPP", json.LOGINPPP)
+        config = strings.ReplaceAll(config, "PASSPPP", json.PASSPPP)
 
         if err := ioutil.WriteFile(path, []byte(config), 0644); err != nil {
                 fmt.Println("erreur pdt l ecriture du fichier bg", err)
