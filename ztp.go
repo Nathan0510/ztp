@@ -124,24 +124,22 @@ func main(){
                 tpl := "/tmp/tpl"
                 path := "/tmp/" + json.SN
 
-            data, err := os.ReadFile(tpl)
+                data, err := os.ReadFile(tpl)
                 if err != nil {
-                fmt.Println("le fichier existe pas bg", err)
-        }
+                        fmt.Println("le fichier existe pas bg", err)
+                }
 
                 config := strings.ReplaceAll(string(data), "LOGINPPP", json.LOGINPPP)
-        config = strings.ReplaceAll(config, "PASSPPP", json.PASSPPP)
+                config = strings.ReplaceAll(config, "PASSPPP", json.PASSPPP)
 
-        if err := ioutil.WriteFile(path, []byte(config), 0644); err != nil {
-                fmt.Println("erreur pdt l ecriture du fichier bg", err)
-        }
+                if err := ioutil.WriteFile(path, []byte(config), 0644); err != nil {
+                        fmt.Println("erreur pdt l ecriture du fichier bg", err)
+                }
 
 
                 c.JSON(http.StatusOK, gin.H{
                         "status": string(config),
                 })
-
-
 
         })
 
