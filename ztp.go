@@ -37,55 +37,52 @@ func main(){
         ztp.POST("/ztp", func (c *gin.Context){
                 var json serialnumber
 
-        if err := c.ShouldBindJSON(&json); err != nil {
-                c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-                return
-        }
+                if err := c.ShouldBindJSON(&json); err != nil {
+                        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+                        return
+                }
 
-        ip := c.ClientIP()
+                ip := c.ClientIP()
 
-        c.JSON(http.StatusOK, gin.H{
-                "ton serial number": json.SN,
-                "ton IP": ip,
-        })
+                c.JSON(http.StatusOK, gin.H{
+                        "ton serial number": json.SN,
+                        "ton IP": ip,
+                })
 
-        address := ip + ":22"
-        path := "/tmp/" + json.SN
+                address := ip + ":22"
+                path := "/tmp/" + json.SN
 
-        data, err := os.ReadFile(path)
-        if  err != nil {
-                fmt.Println("le fichier existe pas bg", err)
-        }
-
-
-        confssh := &ssh.ClientConfig{
-                User: "admin",
-                Auth: []ssh.AuthMethod{
-                        ssh.Password("admin"),
-                },
-        HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-
-        }
-
-        client, err := ssh.Dial("tcp", address, confssh)
-        if err != nil {
-                fmt.Println("connexion failed bg", err)
-        }
-        defer client.Close()
-
-        session, err := client.NewSession()
-        if err != nil {
-                fmt.Println("session failed bg", err)
-        }
-        defer session.Close()
-
-    if err := session.Run(string(data)); err != nil {
-         fmt.Println("command failed bg", err)
-    }
+                data, err := os.ReadFile(path)
+                if  err != nil {
+                        fmt.Println("le fichier existe pas bg", err)
+                }
 
 
+                confssh := &ssh.ClientConfig{
+                        User: "admin",
+                        Auth: []ssh.AuthMethod{
+                                ssh.Password("admin"),
+                        },
+                        
+                HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+                }
 
-        })
+                client, err := ssh.Dial("tcp", address, confssh)
+                if err != nil {
+                        fmt.Println("connexion failed bg", err)
+                }
+                defer client.Close()
+
+                session, err := client.NewSession()
+                if err != nil {
+                        fmt.Println("session failed bg", err)
+                }
+                defer session.Close()
+
+                if err := session.Run(string(data)); err != nil {
+                        fmt.Println("command failed bg", err)
+                    }
+                })
 
 
         ztp.GET("/config", func (c *gin.Context){
