@@ -44,11 +44,6 @@ func main(){
 
                 ip := c.ClientIP()
 
-                c.JSON(http.StatusOK, gin.H{
-                        "ton serial number": json.SN,
-                        "ton IP": ip,
-                })
-
                 address := ip + ":22"
                 path := "/tmp/" + json.SN
 
